@@ -1,0 +1,21 @@
+#history-search-container {
+    height: 100%;
+    width: 28%;
+    right: 0;
+}
+
+#docs-container {
+    width: 72%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#history_input_group {
+    width: 75%;
+}
+
+#history_input_group_append {
+    height: 42px;
+}

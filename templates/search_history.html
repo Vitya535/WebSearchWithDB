@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>История поиска</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/history.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/history.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/search_history.js') }}"></script>
+    <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
+</head>
+<body>
+{% include 'navigation.html' %}
+<div class="container-fluid float-left" id="docs-container">
+    <div class="row">
+        <div class="col offset-1">
+            <h2 class="pt-2">История поиска</h2>
+        </div>
+    </div>
+    {% for i in range(6) %}
+        {% if loop.last %}
+            <div class="row py-5">
+        {% else %}
+            <div class="row pt-5">
+        {% endif %}
+    <div class="col-10 offset-1">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0 float-left" href="/results?search_query=Документ+1">
+            <h6>Документ 1</h6>
+            <span>10 часов назад</span>
+        </a>
+        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="float-right bg-light position-fixed" id="history-search-container">
+        <form action="{{ url_for('search_by_query') }}">
+            <div class="input-group mx-auto mt-4" id="history_input_group">
+                {{ search_in_history_form.history_search_query }}
+                <div class="input-group-append mt-4" id="history_input_group_append">
+                    <button type="reset" class="btn btn-filter bg-white">
+                        <i class="fas fa-times form-control-clear"></i>
+                    </button>
+                    {{ search_in_history_form.history_search_button }}
+                </div>
+            </div>
+        </form>
+        <div class="form-check mx-auto w-75 mt-4">
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" id="rb_watch_history" name="rb_switch_history">История
+                просмотра
+            </label>
+        </div>
+        <div class="form-check mx-auto w-75">
+            <label class="form-check-label">
+                <input type="radio" class="form-check-input" id="rb_search_history" name="rb_switch_history" checked>История
+                поиска
+            </label>
+        </div>
+        <button type="button" class="btn btn-light font-weight-bold mt-4 ml-5" id="clear_history">Очистить историю
+            поиска
+        </button>
+        <button type="button" class="btn btn-light font-weight-bold ml-5" id="track_history">Не отслеживать историю
+            поиска
+        </button>
+    </div>
+    {% include 'modal_windows.html' %}
+</body>
+</html>

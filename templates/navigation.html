@@ -1,0 +1,39 @@
+<nav class="navbar sticky-top border-bottom bg-white">
+    <ul class="nav float-left">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main_page') }}">
+                <img src="{{ url_for('static', filename='img/csf_logo.jpg') }}" width="50" height="50" alt="ФКН"/>
+            </a>
+        </li>
+    </ul>
+    <ul class="nav mx-auto">
+        <li class="nav-item">
+            <form action="{{ url_for('search_by_query') }}">
+                <div class="input-group has-clear">
+                    {{ search_form.search_query }}
+                    <div class="input-group-append">
+                        <button type="reset" class="btn btn-filter bg-white">
+                            <i class="fas fa-times form-control-clear"></i>
+                        </button>
+                        <span class="btn btn-filter bg-white" data-toggle="modal"
+                              data-target="#modal_window_search_filter">
+                            <i class="fas fa-sliders-h"></i>
+                        </span>
+                        {{ search_form.search_button }}
+                    </div>
+                </div>
+            </form>
+        </li>
+    </ul>
+    <ul class="nav float-right">
+        <li class="nav-item pr-2">
+            <a class="nav-link text-dark" href="{{ url_for('show_watch_history') }}">
+                <i class="fas fa-history"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <img class="circling_style" id="avatar" data-toggle="modal"
+                 data-target="#modal_window_for_user" alt="Аватар" src=""/>
+        </li>
+    </ul>
+</nav>

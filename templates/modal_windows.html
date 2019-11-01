@@ -1,0 +1,57 @@
+<div class="modal" id="modal_window_for_user" tabindex="-1" role="dialog"
+     aria-labelledby="label_modal_window_for_user" aria-hidden="true">
+    <div class="modal-dialog" id="account_dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img class="circling_style" id="avatar" alt="Аватар" src=""/>
+                <div>
+                    <h5 class="modal-title" id="label_modal_window_for_user">Виктор Кушнеренко</h5>
+                    <span class="email">kushnerenko.viktor@gmail.com</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <a class="nav-link text-dark" href="{{ url_for('show_watch_history') }}">
+                    <i class="fas fa-folder pr-1"></i>
+                    Мои документы
+                </a>
+                <a class="nav-link text-dark" href="{{ url_for('show_watch_history') }}">
+                    <i class="fas fa-exchange-alt pr-1"></i>
+                    Смена аккаунта
+                </a>
+                <a class="nav-link text-dark" href="{{ url_for('show_watch_history') }}">
+                    <i class="fas fa-sign-out-alt pr-1"></i>
+                    Выйти
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal_window_search_filter" tabindex="-1" role="dialog"
+     aria-labelledby="label_modal_window_search_filter" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="label_modal_window_search_filter">Фильтр поиска</h5>
+            </div>
+            <div class="modal-body">
+                <h6>Расширение</h6>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="">PDF
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="">DOC(DOCX)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="">TXT
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

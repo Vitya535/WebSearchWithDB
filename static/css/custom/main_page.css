@@ -1,0 +1,61 @@
+#search_query {
+    width: 680px;
+}
+
+.circling_style {
+    border-radius: 50%;
+}
+
+#label_modal_window_for_user {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 2rem;
+}
+
+#avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    margin-top: 16px;
+    border-radius: 50%;
+}
+
+.email {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 2.1rem;
+}
+
+.download_icon_style,
+.download_icon_style:hover,
+.download_icon_style:active {
+    margin-top: -0.5rem;
+    width: 16px;
+    height: 16px;
+}
+
+.btn-filter {
+    border-top: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
+    border-right: 1px solid #ced4da;
+}
+
+.modal-backdrop.show {
+    opacity: 0;
+}
+
+#account_dialog {
+    top: 55px;
+    right: 30px;
+    position: absolute;
+}
+
+html, body {
+    height: 100%;
+}
+
+.form-control-clear {
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}
