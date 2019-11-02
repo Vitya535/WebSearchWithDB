@@ -17,7 +17,7 @@
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
-{% include 'navigation.html' %}
+{% include 'public/navigation.html' %}
 <div class="container-fluid">
     <div class="row">
         <div class="col offset-1">
@@ -36,11 +36,11 @@
             {% else %}
                 <div class="col">
             {% endif %}
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/test_files/Book.pdf">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_filesiles/Book.pdf">
             <h6>Документ 1</h6>
             <img width="300" height="500" class="border" alt="Документ" src=""/>
         </a>
-        <a class="nav-link text-dark download_icon_style" href="/test_files/Book.pdf" download>
+        <a class="nav-link text-dark download_icon_style" href="/app/test_filesiles/Book.pdf" download>
             <i class="fas fa-download"></i>
         </a>
         </div>
@@ -48,6 +48,6 @@
     </div>
     {% endfor %}
     </div>
-{% include 'modal_windows.html' %}
+{% include 'public/modal_windows.html' %}
 </body>
 </html>

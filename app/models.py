@@ -1,9 +1,17 @@
-from sqlalchemy import Column, Enum, String, TIMESTAMP, Integer, ForeignKey
+"""Файл, в котором реализованы различные сущности БД в виде классов"""
+from sqlalchemy import Column
+from sqlalchemy import Enum
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy import TIMESTAMP
 from sqlalchemy.orm import relationship
-from utils import FileExtension
+
+from app.utils import FileExtension
 
 
 class DocMetadata:
+    """Класс, в котором реализованы метаданные для документов"""
     __tablename__ = 'DocMetadata'
     id = Column(Integer, primary_key=True, autoincrement=True)
     extension = Column(Enum(FileExtension), nullable=False)
@@ -22,11 +30,15 @@ class DocMetadata:
 
 
 class WatchHistoryRecord:
+    """Сущность записи истории просмотра"""
     __tablename__ = 'WatchHistoryRecord'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False, unique=True)
     img_url = Column(String, nullable=False, unique=True)
-    doc_id = Column(Integer, ForeignKey('DocMetadata.id', ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    doc_id = Column(Integer, ForeignKey('DocMetadata.id',
+                                        ondelete="CASCADE",
+                                        onupdate="CASCADE"),
+                    nullable=False)
 
     def __init__(self, name, img_url):
         self.name = name
@@ -37,11 +49,15 @@ class WatchHistoryRecord:
 
 
 class SearchHistoryRecord:
+    """Сущность записи истории поиска"""
     __tablename__ = 'SearchHistoryRecord'
     id = Column(Integer, primary_key=True, autoincrement=True)
     search_query = Column(String, nullable=False, unique=True)
     search_time = Column(TIMESTAMP, nullable=False)
-    doc_id = Column(Integer, ForeignKey('DocMetadata.id', ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    doc_id = Column(Integer, ForeignKey('DocMetadata.id',
+                                        ondelete="CASCADE",
+                                        onupdate="CASCADE"),
+                    nullable=False)
 
     def __init__(self, search_query, search_time):
         self.search_query = search_query

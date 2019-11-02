@@ -1,10 +1,13 @@
+"""Файл с различными формами, необходимыми для приложения"""
 from wtforms import Form
 from wtforms.fields import StringField
 from wtforms.fields.html5 import SearchField
-from wtforms.widgets import html_params, HTMLString
+from wtforms.widgets import HTMLString
+from wtforms.widgets import html_params
 
 
-class ButtonWidget(object):
+class ButtonWidget:
+    """Класс, реализующий кнопку типа <button {params}>{label}</button>"""
     input_type = 'submit'
     html_params = staticmethod(html_params)
 
@@ -16,21 +19,25 @@ class ButtonWidget(object):
 
         return HTMLString('<button {params}>{label}</button>'.format(
             params=self.html_params(name=field.name, **kwargs),
-            label=field.label.text)
-        )
+            label=field.label.text))
 
 
 class ButtonField(StringField):
+    """Класс, создающий из кнопки поле"""
     widget = ButtonWidget()
 
 
 class SearchForm(Form):
+    """Класс, реализующий поисковую форму"""
     search_query = SearchField(render_kw={'placeholder': 'Введите запрос', 'class': 'form-control'})
-    search_button = ButtonField('<i class="fas fa-search"></i>', render_kw={'class': 'btn btn-light border'})
+    search_button = ButtonField('<i class="fas fa-search"></i>',
+                                render_kw={'class': 'btn btn-light border'})
 
 
 class HistorySearchForm(Form):
+    """Класс, реализующий форму поиска в истории поиска/просмотра"""
     history_search_query = SearchField(
         render_kw={'placeholder': 'Что найти в истории?', 'class': 'form-control mt-4 mx-auto',
                    'id': 'history_search_query'})
-    history_search_button = ButtonField('<i class="fas fa-search"></i>', render_kw={'class': 'btn btn-light border'})
+    history_search_button = ButtonField('<i class="fas fa-search"></i>',
+                                        render_kw={'class': 'btn btn-light border'})
