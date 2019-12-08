@@ -8,17 +8,15 @@ from wtforms.widgets import html_params
 
 class ButtonWidget:
     """Класс, реализующий кнопку типа <button {params}>{label}</button>"""
-    input_type = 'submit'
     html_params = staticmethod(html_params)
 
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
-        kwargs.setdefault('type', self.input_type)
         if 'value' not in kwargs:
             kwargs['value'] = field._value()
 
         return HTMLString('<button {params}>{label}</button>'.format(
-            params=self.html_params(name=field.name, **kwargs),
+            params=self.html_params(**kwargs),
             label=field.label.text))
 
 

@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>История просмотра</title>
+    <title>Результаты истории просмотра</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -25,7 +25,7 @@
 <div class="container-fluid float-left" id="docs-container">
     <div class="row">
         <div class="col offset-1">
-            <h2 class="pt-2">История просмотра</h2>
+            <h2 class="pt-2">Результаты поиска</h2>
         </div>
     </div>
 {#    {% for i in range(6) %}#}
@@ -49,6 +49,7 @@
 {#        {% endfor %}#}
 {#    </div>#}
 {#    {% endfor %}#}
+{#    </div>#}
     {% for record in watch_history_records %}
         {% if loop.last %}
             <div class="row py-5">

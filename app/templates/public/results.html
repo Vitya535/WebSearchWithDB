@@ -14,6 +14,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main_page.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/common.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
@@ -24,7 +25,7 @@
             <h2 class="pt-2">Результаты поиска</h2>
         </div>
     </div>
-    {% for i in range(6) %}
+    {% for i in range(count_of_rows) %}
         {% if loop.last %}
             <div class="row py-5">
         {% else %}
@@ -36,11 +37,11 @@
             {% else %}
                 <div class="col">
             {% endif %}
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_filesiles/Book.pdf">
-            <h6>Документ 1</h6>
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_files/Book.pdf">
+            <h6>{{ documents[count_of_rows * i + j].doc_name }}</h6>
             <img width="300" height="500" class="border" alt="Документ" src=""/>
         </a>
-        <a class="nav-link text-dark download_icon_style" href="/app/test_filesiles/Book.pdf" download>
+        <a class="nav-link text-dark download_icon_style" href="/app/test_files/Book.pdf" download>
             <i class="fas fa-download"></i>
         </a>
         </div>

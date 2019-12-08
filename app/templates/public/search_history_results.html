@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>История просмотра</title>
+    <title>Результаты истории поиска</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/history.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='js/custom/common.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/custom/history.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/watch_history.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/search_history.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
@@ -25,40 +25,19 @@
 <div class="container-fluid float-left" id="docs-container">
     <div class="row">
         <div class="col offset-1">
-            <h2 class="pt-2">История просмотра</h2>
+            <h2 class="pt-2">Результаты поиска</h2>
         </div>
     </div>
-{#    {% for i in range(6) %}#}
-{#        {% if loop.last %}#}
-{#            <div class="row py-5">#}
-{#        {% else %}#}
-{#            <div class="row pt-5">#}
-{#        {% endif %}#}
-{#        {% for i in range(3) %}#}
-{#            {% if loop.first %}#}
-{#                <div class="col offset-1">#}
-{#            {% else %}#}
-{#                <div class="col">#}
-{#            {% endif %}#}
-{#        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_files/Book.pdf">#}
-{#            <h6>Документ 1</h6>#}
-{#            <img width="300" height="500" class="border" alt="Документ" src=""/>#}
-{#        </a>#}
-{#        <i class="fas fa-times delete-doc"></i>#}
-{#        </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#    {% endfor %}#}
-    {% for record in watch_history_records %}
+    {% for record in search_history_records %}
         {% if loop.last %}
             <div class="row py-5">
         {% else %}
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_files/Book.pdf">
-            <h6>{{ record.name }}</h6>
-            <img width="300" height="500" class="border" alt="Документ" src=""/>
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0 float-left" href="/results?search_query=Документ+1">
+            <h6>{{ record.search_query }}</h6>
+            <span>{{ record.search_time }}</span>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
@@ -67,11 +46,11 @@
     </div>
 
     <div class="float-right bg-light position-fixed" id="history-search-container">
-        <form action="{{ url_for('search_in_watch_history_by_query') }}">
+        <form action="{{ url_for('search_in_search_history_by_query') }}">
             <div class="input-group mx-auto mt-4" id="history_input_group">
                 {{ search_in_history_form.history_search_query }}
                 <div class="input-group-append mt-4" id="history_input_group_append">
-                    <span class="btn btn-filter bg-white" id="watch-history-query-btn">
+                    <span class="btn btn-filter bg-white" id="search-history-query-btn">
                         <i class="fas fa-times form-control-clear"></i>
                     </span>
                     {{ search_in_history_form.history_search_button }}
@@ -80,23 +59,21 @@
         </form>
         <div class="form-check mx-auto w-75 mt-4">
             <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_watch_history" name="rb_switch_history"
-                       checked>История
+                <input type="radio" class="form-check-input" id="rb_watch_history" name="rb_switch_history">История
                 просмотра
             </label>
         </div>
         <div class="form-check mx-auto w-75">
             <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_search_history" name="rb_switch_history"
-                >История
+                <input type="radio" class="form-check-input" id="rb_search_history" name="rb_switch_history" checked>История
                 поиска
             </label>
         </div>
         <button type="button" class="btn btn-light font-weight-bold mt-4 ml-5" id="clear_history">Очистить историю
-            просмотра
+            поиска
         </button>
         <button type="button" class="btn btn-light font-weight-bold ml-5" id="track_history">Не отслеживать историю
-            просмотра
+            поиска
         </button>
     </div>
     {% include 'public/modal_windows.html' %}

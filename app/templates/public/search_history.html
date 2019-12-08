@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main_page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/history.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/common.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/custom/history.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/custom/search_history.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
@@ -27,16 +28,16 @@
             <h2 class="pt-2">История поиска</h2>
         </div>
     </div>
-    {% for i in range(6) %}
+    {% for record in search_history_records %}
         {% if loop.last %}
             <div class="row py-5">
         {% else %}
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0 float-left" href="/results?search_query=Документ+1">
-            <h6>Документ 1</h6>
-            <span>10 часов назад</span>
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/results?search_query=Документ+1">
+            <h6>{{ record.search_query }}</h6>
+            <span>{{ record.search_time }}</span>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
@@ -45,13 +46,13 @@
     </div>
 
     <div class="float-right bg-light position-fixed" id="history-search-container">
-        <form action="{{ url_for('search_by_query') }}">
+        <form action="{{ url_for('search_in_search_history_by_query') }}">
             <div class="input-group mx-auto mt-4" id="history_input_group">
                 {{ search_in_history_form.history_search_query }}
                 <div class="input-group-append mt-4" id="history_input_group_append">
-                    <button type="reset" class="btn btn-filter bg-white">
+                    <span class="btn btn-filter bg-white" id="search-history-query-btn">
                         <i class="fas fa-times form-control-clear"></i>
-                    </button>
+                    </span>
                     {{ search_in_history_form.history_search_button }}
                 </div>
             </div>

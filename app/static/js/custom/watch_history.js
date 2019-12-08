@@ -1,6 +1,15 @@
 $(document).ready(function () {
     $(".delete-doc").click(function () {
-        $(this).parent().remove();
+        // $(this).parent().remove();
+        $(this).parent().parent().remove();
+
+        let nav_link = $(this).siblings('.nav-link')[0];
+        let document_name = $(nav_link).children('h6').val();
+        alert(document_name);
+        $.post('/watch_history', {document_name: document_name})
+            .success(function (data) {
+                alert(data);
+            });
     });
 
     $("#clear_history").click(function () {
