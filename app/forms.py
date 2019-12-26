@@ -2,6 +2,7 @@
 from wtforms import Form
 from wtforms.fields import StringField
 from wtforms.fields.html5 import SearchField
+from wtforms.validators import InputRequired
 from wtforms.widgets import HTMLString
 from wtforms.widgets import html_params
 
@@ -27,7 +28,8 @@ class ButtonField(StringField):
 
 class SearchForm(Form):
     """Класс, реализующий поисковую форму"""
-    search_query = SearchField(render_kw={'placeholder': 'Введите запрос', 'class': 'form-control'})
+    search_query = SearchField(render_kw={'placeholder': 'Введите запрос', 'class': 'form-control'},
+                               validators=[InputRequired()])
     search_button = ButtonField('<i class="fas fa-search"></i>',
                                 render_kw={'class': 'btn btn-light border'})
 
@@ -36,6 +38,6 @@ class HistorySearchForm(Form):
     """Класс, реализующий форму поиска в истории поиска/просмотра"""
     history_search_query = SearchField(
         render_kw={'placeholder': 'Что найти в истории?', 'class': 'form-control mt-4 mx-auto',
-                   'id': 'history_search_query'})
+                   'id': 'history_search_query'}, validators=[InputRequired()])
     history_search_button = ButtonField('<i class="fas fa-search"></i>',
                                         render_kw={'class': 'btn btn-light border'})

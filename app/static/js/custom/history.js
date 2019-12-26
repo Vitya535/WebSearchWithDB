@@ -1,9 +1,9 @@
 $(document).ready(function () {
     $("#rb_watch_history").click(function () {
-        $(location).attr('pathname', '/watch_history');
+        $(location).attr('href', '/watch_history');
     });
 
     $("#rb_search_history").click(function () {
-        $(location).attr('pathname', '/search_history');
+        $(location).attr('href', '/search_history');
     });
 });

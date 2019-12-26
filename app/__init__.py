@@ -1,22 +1,28 @@
 """Инициальзация частей приложения"""
+from logging import DEBUG
+from logging import ERROR
+from logging import Formatter
+from logging.handlers import RotatingFileHandler
+
 from flask import Flask
+from flask.logging import create_logger
+from flask_cdn import CDN
+from flask_htmlmin import HTMLMIN
 from flask_sqlalchemy import SQLAlchemy
 
-# from sqlalchemy import create_engine
+from app.assets import ASSETS
 
-# ToDo - 1. Сделать на стороне фронта правильное удаление в истории просмотра
-#  (а не то, что сейчас) - также удалить на сервере.
-#  (А если я через AJAX сделаю, может мне с этим заморачиваться и не придется?)
-
-# ToDo - разобраться окончательно с БД и выводом на странички информации с бэка!!!
-
-# ToDo - 2. При очищении истории поиска очищать ее и на сервере тоже
-# ToDo - 3. Окончательно разобраться с БД
-# ToDo - 4. Заниматься бэком чтоли)
-# ToDo - 5. Авторизация в пролете???
-
-# ToDo - как инициализировать экзмепляр класса SQLAlchemy
-#  без библиотеки Flask-SQLAlchemy? (если это вообще возможно)
+# ToDo - вставить как-то скрин 1-ой страницы или что-то в этом духе на месте img-шек доков
+#  (нашел какой-то ViewerJS, может поможет)
+# ToDo - не показывает Word-файл в вебе, проверить другие форматы файлов (нашел какой-то ViewerJS, может поможет)
+# ToDo - Авторизация???
+# ToDo - секьюрити???
+# ToDo - странички ошибок по возможности покрасивее сделать и получше
+# ToDo - тесты???
+# ToDo - сделать так чтобы при добавлении доков в папку они добавлялись в базу???
+#  Ну и вообще чтобы доки, которые находятся в папке, при инициализации приложения всегда были в БД???
+# ToDo - фильтрация по расширению файла при поиске???
+# ToDo - убрать кастомное поведение валидации у поискового поля или не убирать???
 
 APP = Flask(__name__)
 
@@ -27,9 +33,23 @@ elif APP.config['ENV'] == 'development':
 else:
     APP.config.from_object('app.config.TestingConfig')
 
-DB = SQLAlchemy(APP)
+ASSETS.init_app(APP)
 
-# ENGINE = create_engine('jdbc:sqlite:C:/University/WebSearchWithDB/app/documents.db')
+DB = SQLAlchemy(APP)
+CDN = CDN(APP)
+LOG = create_logger(APP)
+HTMLMIN = HTMLMIN(APP)
+
+formatter = Formatter("%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
+debug_handler = RotatingFileHandler('app/logs/debug.log', maxBytes=10000, backupCount=1)
+debug_handler.setLevel(DEBUG)
+debug_handler.setFormatter(formatter)
+LOG.addHandler(debug_handler)
+
+error_handler = RotatingFileHandler('app/logs/error.log', maxBytes=10000, backupCount=1)
+error_handler.setLevel(ERROR)
+error_handler.setFormatter(formatter)
+LOG.addHandler(error_handler)
 
 from app import views
 from app import errors

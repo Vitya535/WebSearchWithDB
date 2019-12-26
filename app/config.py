@@ -11,6 +11,15 @@ class Config:
     CLIENT_IMAGES = 'test_files/'
     CSRF_ENABLED = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, 'documents.db')
+    CDN_HTTPS = True
+    CDN_TIMESTAMP = False
+    CDN_DOMAIN = 'cdnjs.cloudflare.com'
+    CDN_ENDPOINTS = ['ajax/libs/jquery/3.4.1/jquery.min.js',
+                     'ajax/libs/popper.js/1.14.7/umd/popper.min.js',
+                     'ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js',
+                     'ajax/libs/font-awesome/5.11.2/js/all.min.js',
+                     'ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css',
+                     'ajax/libs/font-awesome/5.11.2/css/all.min.css']
 
 
 class ProductionConfig(Config):
@@ -18,6 +27,9 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ASSETS_DEBUG = False
+    CDN_DEBUG = False
+    MINIFY_HTML = True
 
 
 class DevelopmentConfig(Config):
@@ -25,6 +37,9 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    ASSETS_DEBUG = True
+    CDN_DEBUG = True
+    MINIFY_HTML = False
 
 
 class TestingConfig(Config):
@@ -32,3 +47,6 @@ class TestingConfig(Config):
     DEBUG = False
     TESTING = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    ASSETS_DEBUG = False
+    CDN_DEBUG = False
+    MINIFY_HTML = False

@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>История просмотра</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/fontawesome/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/main_page.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom/history.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/common.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/history.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/watch_history.js') }}"></script>
+    {% assets 'cdn_common_css' %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets 'cdn_common_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets 'history_common_css' %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+    {% assets 'watch_history_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
@@ -28,42 +25,81 @@
             <h2 class="pt-2">История просмотра</h2>
         </div>
     </div>
-{#    {% for i in range(6) %}#}
-{#        {% if loop.last %}#}
-{#            <div class="row py-5">#}
-{#        {% else %}#}
-{#            <div class="row pt-5">#}
-{#        {% endif %}#}
-{#        {% for i in range(3) %}#}
-{#            {% if loop.first %}#}
-{#                <div class="col offset-1">#}
-{#            {% else %}#}
-{#                <div class="col">#}
-{#            {% endif %}#}
-{#        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_files/Book.pdf">#}
-{#            <h6>Документ 1</h6>#}
-{#            <img width="300" height="500" class="border" alt="Документ" src=""/>#}
-{#        </a>#}
-{#        <i class="fas fa-times delete-doc"></i>#}
-{#        </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#    {% endfor %}#}
-    {% for record in watch_history_records %}
+    {% for record in watch_history_records_today %}
+        {% if loop.first %}
+            <div class="row">
+                <div class="col offset-1">
+                    <h4 class="pt-5">Сегодня</h4>
+                </div>
+            </div>
+        {% endif %}
         {% if loop.last %}
             <div class="row py-5">
         {% else %}
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="/app/test_files/Book.pdf">
-            <h6>{{ record.name }}</h6>
-            <img width="300" height="500" class="border" alt="Документ" src=""/>
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+            <h6>{{ record[1].doc_name }}</h6>
+            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
     </div>
     {% endfor %}
+    {% for record in watch_history_records_yesterday %}
+        {% if loop.first %}
+            <div class="row">
+                <div class="col offset-1">
+                    <h4 class="pt-5">Вчера</h4>
+                </div>
+            </div>
+        {% endif %}
+        {% if loop.last %}
+            <div class="row py-5">
+        {% else %}
+            <div class="row pt-5">
+        {% endif %}
+    <div class="col-10 offset-1">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+            <h6>{{ record[1].doc_name }}</h6>
+            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
+        </a>
+        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
+    </div>
+    </div>
+    {% endfor %}
+    {% for record in watch_history_records_days_ago %}
+        {% if loop.first %}
+            <div class="row">
+                <div class="col offset-1">
+                    <h4 class="pt-5">Несколько дней назад</h4>
+                </div>
+            </div>
+        {% endif %}
+        {% if loop.last %}
+            <div class="row py-5">
+        {% else %}
+            <div class="row pt-5">
+        {% endif %}
+    <div class="col-10 offset-1">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+            <h6>{{ record[1].doc_name }}</h6>
+            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
+        </a>
+        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
+    </div>
+    </div>
+    {% endfor %}
+    {% if not watch_history_records_today
+     and not watch_history_records_yesterday
+      and not watch_history_records_days_ago %}
+        <div class='row align-items-center mt-5'>
+            <div class='col-12'>
+                <h4 class='text-center'>История просмотров пуста!</h4>
+            </div>
+        </div>
+    {% endif %}
     </div>
 
     <div class="float-right bg-light position-fixed" id="history-search-container">
