@@ -1,4 +1,4 @@
-"""Файл со скриптами для создания БД в SQLite"""
+"""Файл для создания БД в SQLite"""
 from sqlite3 import connect
 
 CONN = connect('documents.db')

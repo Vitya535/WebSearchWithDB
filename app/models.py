@@ -40,7 +40,7 @@ class WatchHistoryRecord(DB.Model):
         self.doc_id = doc_id
 
     def __repr__(self):
-        return "WatchHistoryRecord(%r, %r)" % (self.id, self.watch_time)
+        return "WatchHistoryRecord(%r, %r, %r)" % (self.id, self.watch_time, self.doc_id)
 
 
 class SearchHistoryRecord(DB.Model):

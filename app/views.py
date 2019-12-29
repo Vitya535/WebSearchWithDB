@@ -18,7 +18,7 @@ from app.orm_db_actions import add_watch_history_record
 from app.orm_db_actions import clear_all_in_search_history
 from app.orm_db_actions import clear_all_in_watch_history
 from app.orm_db_actions import delete_search_history_record_by_search_query
-from app.orm_db_actions import delete_watch_history_record_by_search_time
+from app.orm_db_actions import delete_watch_history_record_by_watch_time
 from app.orm_db_actions import get_all_search_history_records
 from app.orm_db_actions import get_all_watch_history_records
 from app.orm_db_actions import get_search_history_records_by_name
@@ -112,7 +112,7 @@ def show_watch_history():
                                watch_history_records_yesterday=watch_history_records_yesterday,
                                watch_history_records_days_ago=watch_history_records_days_ago)
     search_time = request.values.get('search_time')
-    delete_watch_history_record_by_search_time(search_time)
+    delete_watch_history_record_by_watch_time(search_time)
     return jsonify()
 
 

@@ -24,10 +24,10 @@ def check_count_of_watch_history_records(function_to_decorate):
     def wrapper(search_time: str, doc_id: int):
         LOG.debug(f"Enter the wrapper with search_time={search_time} and doc_id={doc_id}")
         function_to_decorate(search_time, doc_id)
-        all_watch_history_records = DB.session.query(WatchHistoryRecord) \
-            .all()
-        LOG.debug(f"All founded watch_history_records is {all_watch_history_records}")
-        if len(all_watch_history_records) > RECORDS_COUNT_WATCH_HISTORY:
+        all_watch_history_records_count = DB.session.query(WatchHistoryRecord) \
+            .count()
+        LOG.debug(f"All founded watch_history_records is {all_watch_history_records_count}")
+        if all_watch_history_records_count > RECORDS_COUNT_WATCH_HISTORY:
             LOG.debug(f"Founded watch_history_records more than limit={RECORDS_COUNT_WATCH_HISTORY}")
             delete_old_watch_history_record()
 
@@ -42,10 +42,10 @@ def check_count_of_search_history_records(function_to_decorate):
     def wrapper(search_query: str, search_time: str):
         LOG.debug(f"Enter the wrapper with search_query={search_query} and search_time={search_time}")
         function_to_decorate(search_query, search_time)
-        all_search_history_records = DB.session.query(SearchHistoryRecord) \
-            .all()
-        LOG.debug(f"All founded search_history_records is {all_search_history_records}")
-        if len(all_search_history_records) > RECORDS_COUNT_SEARCH_HISTORY:
+        all_search_history_records_count = DB.session.query(SearchHistoryRecord) \
+            .count()
+        LOG.debug(f"All founded search_history_records is {all_search_history_records_count}")
+        if all_search_history_records_count > RECORDS_COUNT_SEARCH_HISTORY:
             LOG.debug(f"Founded search_history_records more than limit={RECORDS_COUNT_SEARCH_HISTORY}")
             delete_old_search_history_record()
 
@@ -147,9 +147,12 @@ def add_search_history_record(search_query: str, search_time: str):
 def delete_old_watch_history_record():
     """Удаление самой старой записи в истории просмотра по дате"""
     LOG.debug(f"Enter the delete_old_watch_history_record")
-    DB.session.query(WatchHistoryRecord) \
+    watch_history_record_for_delete = DB.session.query(WatchHistoryRecord) \
         .filter(WatchHistoryRecord.watch_time == select([func.min(WatchHistoryRecord.watch_time)])) \
-        .delete(synchronize_session='fetch')
+        .first()
+    DB.session.query(WatchHistoryRecord) \
+        .filter(WatchHistoryRecord.id == watch_history_record_for_delete.id) \
+        .delete()
     DB.session.flush()
     DB.session.commit()
 
@@ -157,18 +160,24 @@ def delete_old_watch_history_record():
 def delete_old_search_history_record():
     """Удаление самой старой записи в истории поиска по дате"""
     LOG.debug(f"Enter the delete_old_search_history_record")
-    DB.session.query(SearchHistoryRecord) \
+    search_history_record_for_delete = DB.session.query(SearchHistoryRecord) \
         .filter(SearchHistoryRecord.search_time == select([func.min(SearchHistoryRecord.search_time)])) \
-        .delete(synchronize_session='fetch')
+        .first()
+    DB.session.query(SearchHistoryRecord) \
+        .filter(SearchHistoryRecord.id == search_history_record_for_delete.id) \
+        .delete()
     DB.session.flush()
     DB.session.commit()
 
 
-def delete_watch_history_record_by_search_time(search_time: str):
+def delete_watch_history_record_by_watch_time(watch_time: str):
     """Удаление записи из истории просмотра"""
-    LOG.debug(f"Enter the delete_watch_history_record_by_search_time with search_time={search_time}")
+    LOG.debug(f"Enter the delete_watch_history_record_by_watch_time with watch_time={watch_time}")
+    watch_history_record_for_delete = DB.session.query(WatchHistoryRecord) \
+        .filter_by(watch_time=watch_time) \
+        .first()
     DB.session.query(WatchHistoryRecord) \
-        .filter_by(search_time=search_time) \
+        .filter(WatchHistoryRecord.id == watch_history_record_for_delete.id) \
         .delete()
     DB.session.flush()
     DB.session.commit()

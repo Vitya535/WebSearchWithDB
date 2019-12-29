@@ -23,15 +23,14 @@ from app.assets import ASSETS
 #  Ну и вообще чтобы доки, которые находятся в папке, при инициализации приложения всегда были в БД???
 # ToDo - фильтрация по расширению файла при поиске???
 # ToDo - убрать кастомное поведение валидации у поискового поля или не убирать???
+# ToDo - поправить доступ к переменным, методам если это возможно
 
 APP = Flask(__name__)
 
 if APP.config['ENV'] == 'production':
     APP.config.from_object('app.config.ProductionConfig')
-elif APP.config['ENV'] == 'development':
-    APP.config.from_object('app.config.DevelopmentConfig')
 else:
-    APP.config.from_object('app.config.TestingConfig')
+    APP.config.from_object('app.config.DevelopmentConfig')
 
 ASSETS.init_app(APP)
 
@@ -41,12 +40,12 @@ LOG = create_logger(APP)
 HTMLMIN = HTMLMIN(APP)
 
 formatter = Formatter("%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
-debug_handler = RotatingFileHandler('app/logs/debug.log', maxBytes=10000, backupCount=1)
+debug_handler = RotatingFileHandler('logs/debug.log', maxBytes=10000, backupCount=1)
 debug_handler.setLevel(DEBUG)
 debug_handler.setFormatter(formatter)
 LOG.addHandler(debug_handler)
 
-error_handler = RotatingFileHandler('app/logs/error.log', maxBytes=10000, backupCount=1)
+error_handler = RotatingFileHandler('logs/error.log', maxBytes=10000, backupCount=1)
 error_handler.setLevel(ERROR)
 error_handler.setFormatter(formatter)
 LOG.addHandler(error_handler)

@@ -3,6 +3,8 @@ from os import path
 from os import urandom
 
 BASEDIR = path.abspath(path.dirname(__file__))
+DOCUMENTS_DB = 'documents.db'
+TEST_DB_DIR = 'unit_tests/test.db'
 
 
 class Config:
@@ -10,7 +12,7 @@ class Config:
     SECRET_KEY = urandom(16)
     CLIENT_IMAGES = 'test_files/'
     CSRF_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, 'documents.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, DOCUMENTS_DB)
     CDN_HTTPS = True
     CDN_TIMESTAMP = False
     CDN_DOMAIN = 'cdnjs.cloudflare.com'
@@ -45,8 +47,9 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Класс для тестирования приложения"""
     DEBUG = False
-    TESTING = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     ASSETS_DEBUG = False
     CDN_DEBUG = False
     MINIFY_HTML = False
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, TEST_DB_DIR)
