@@ -11,18 +11,16 @@ class DocMetadata(DB.Model):
     extension = DB.Column(DB.Enum(FileExtension), nullable=False)
     doc_name = DB.Column(DB.String, nullable=False, unique=True)
     path = DB.Column(DB.String, nullable=False, unique=True)
-    img_url = DB.Column(DB.String, nullable=False)
     watch_history_records = DB.relationship("WatchHistoryRecord", backref="doc_metadata", lazy=True)
 
-    def __init__(self, extension, name, path, img_url):
+    def __init__(self, extension, name, path):
         self.extension = extension
         self.doc_name = name
         self.path = path
-        self.img_url = img_url
 
     def __repr__(self):
-        return "DocMetadata(%r, %r, %r, %r, %r)" \
-               % (self.id, self.extension, self.doc_name, self.path, self.img_url)
+        return "DocMetadata(%r, %r, %r, %r)" \
+               % (self.id, self.extension, self.doc_name, self.path)
 
 
 class WatchHistoryRecord(DB.Model):

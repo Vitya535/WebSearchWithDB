@@ -7,7 +7,7 @@ from sqlalchemy import func
 from sqlalchemy import select
 
 from app import DB
-from app.constants import RECORDS_COUNT_SEARCH_HISTORY
+from app.constants import ProjectConstants
 from app.models import SearchHistoryRecord
 from app.orm_db_actions import add_search_history_record
 from .common_settings_for_test_case import CommonSettingsForTestCase
@@ -32,34 +32,35 @@ class AddSearchHistoryRecordTestCase(CommonSettingsForTestCase):
 
     def test_check_count_of_search_history_records_with_same_search_time(self):
         """Тест добавления записи в историю поиска в случае превышения лимита записей при одинаковых датах"""
-        for i in range(1, RECORDS_COUNT_SEARCH_HISTORY + 1):
+        for i in range(1, ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY + 1):
             add_search_history_record(str(i), datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         search_history_record_with_min_search_time = DB.session.query(SearchHistoryRecord) \
             .filter(SearchHistoryRecord.search_time == select([func.min(SearchHistoryRecord.search_time)])) \
             .first()
-        add_search_history_record(str(RECORDS_COUNT_SEARCH_HISTORY + 1), datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        add_search_history_record(str(ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY + 1),
+                                  datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         search_history_record_with_max_search_time = DB.session.query(SearchHistoryRecord) \
             .filter(SearchHistoryRecord.search_time == select([func.max(SearchHistoryRecord.search_time)])) \
             .first()
         search_history_records = DB.session.query(SearchHistoryRecord).all()
-        self.assertEqual(len(search_history_records), RECORDS_COUNT_SEARCH_HISTORY)
+        self.assertEqual(len(search_history_records), ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY)
         self.assertIn(search_history_record_with_max_search_time, search_history_records)
         self.assertNotIn(search_history_record_with_min_search_time, search_history_records)
 
     def test_check_count_of_search_history_records_with_different_search_time(self):
         """Тест добавления записи в историю поиска в случае превышения лимита записей при разных датах"""
-        for i in range(1, RECORDS_COUNT_SEARCH_HISTORY + 1):
+        for i in range(1, ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY + 1):
             add_search_history_record(str(i), (datetime.now() + timedelta(seconds=i)).strftime("%Y-%m-%d %H:%M:%S"))
         search_history_record_with_min_search_time = DB.session.query(SearchHistoryRecord) \
             .filter(SearchHistoryRecord.search_time == select([func.min(SearchHistoryRecord.search_time)])) \
             .first()
-        add_search_history_record(str(RECORDS_COUNT_SEARCH_HISTORY + 1),
+        add_search_history_record(str(ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY + 1),
                                   (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S"))
         search_history_record_with_max_search_time = DB.session.query(SearchHistoryRecord) \
             .filter(SearchHistoryRecord.search_time == select([func.max(SearchHistoryRecord.search_time)])) \
             .first()
         search_history_records = DB.session.query(SearchHistoryRecord).all()
-        self.assertEqual(len(search_history_records), RECORDS_COUNT_SEARCH_HISTORY)
+        self.assertEqual(len(search_history_records), ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY)
         self.assertIn(search_history_record_with_max_search_time, search_history_records)
         self.assertNotIn(search_history_record_with_min_search_time, search_history_records)
 

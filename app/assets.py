@@ -6,6 +6,7 @@ BUNDLES = {
     'cdn_common_css': Bundle(
         'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css',
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.5.0/viewer.min.css',
         output='gen/css/common.css',
         filters='cssmin'
     ),
@@ -14,6 +15,7 @@ BUNDLES = {
         'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.5.0/viewer.min.js',
         output='gen/js/common.js',
         filters='jsmin'
     ),

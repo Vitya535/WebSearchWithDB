@@ -2,9 +2,17 @@ $(document).ready(function () {
     $(".delete-doc").click(function () {
         $(this).parent().parent().remove();
 
-        let nav_link = $(this).siblings()[0];
-        let search_query = $(nav_link).children('h6').text();
-        $.post('/search_history', {search_query: search_query});
+        let nav_link = $(this).siblings(':first');
+        let search_query = $(nav_link).children(':first').text();
+        $.post('/search_history', {search_query: search_query}, onDeleteFromSearchHistory);
+
+        function onDeleteFromSearchHistory() {
+            let docs_container = $("#docs-container");
+            if ($(docs_container).children('.row.py-5, .row.pt-5').length === 0) {
+                $(docs_container).empty();
+                $(docs_container).append("<div class='row'><div class='col offset-1'><h2 class='pt-2'>История поиска</h2></div></div><div class='row align-items-center mt-5'><div class='col-12'><h4 class='text-center'>История поиска пуста!</h4></div></div>");
+            }
+        }
     });
 
     $("#clear_history").click(function () {
@@ -13,8 +21,9 @@ $(document).ready(function () {
         }
 
         function onSuccessClearSearchHistory() {
-            $("#docs-container").empty();
-            $("#docs-container").append("<div class='row'><div class='col offset-1'><h2 class='pt-2'>История поиска</h2></div></div><div class='row align-items-center mt-5'><div class='col-12'><h4 class='text-center'>История пуста!</h4></div></div>");
+            let docs_container = $("#docs-container");
+            $(docs_container).empty();
+            $(docs_container).append("<div class='row'><div class='col offset-1'><h2 class='pt-2'>История поиска</h2></div></div><div class='row align-items-center mt-5'><div class='col-12'><h4 class='text-center'>История поиска пуста!</h4></div></div>");
         }
     });
 

@@ -39,9 +39,9 @@
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
             <h6>{{ record[1].doc_name }}</h6>
-            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
+            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
@@ -61,9 +61,9 @@
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
             <h6>{{ record[1].doc_name }}</h6>
-            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
+            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
@@ -83,9 +83,9 @@
             <div class="row pt-5">
         {% endif %}
     <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ record[1].path }}">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
             <h6>{{ record[1].doc_name }}</h6>
-            <img width="300" height="500" class="border" alt="Документ" src="{{ record[1].img_url }}"/>
+            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
         </a>
         <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
     </div>
