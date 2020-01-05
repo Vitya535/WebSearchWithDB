@@ -6,14 +6,8 @@
     {% assets 'cdn_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    {% assets 'cdn_common_js' %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
     {% assets 'history_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
-    {% assets 'watch_history_js' %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
@@ -25,75 +19,35 @@
             <h2 class="pt-2">Результаты поиска</h2>
         </div>
     </div>
-    {% for record in watch_history_records_today %}
-        {% if loop.first %}
+    {% for watch_time in watch_history_records_dict %}
+        {% if watch_history_records_dict[watch_time] %}
             <div class="row">
                 <div class="col offset-1">
-                    <h4 class="pt-5">Сегодня</h4>
+                    <h4 class="pt-5">
+                        {{ watch_time }}
+                    </h4>
                 </div>
             </div>
         {% endif %}
-        {% if loop.last %}
-            <div class="row py-5">
-        {% else %}
-            <div class="row pt-5">
-        {% endif %}
-    <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
-            <h6>{{ record[1].doc_name }}</h6>
-            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
-        </a>
-        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
-    </div>
-    </div>
+        {% for record in watch_history_records_dict[watch_time] %}
+            {% if loop.last %}
+                <div class="row py-5">
+            {% else %}
+                <div class="row pt-5">
+            {% endif %}
+        <div class="col-10 offset-1">
+            <a class="nav-link text-dark float-left pr-3 py-0 pl-0"
+               href="{{ url_for('watch_file', path_to_file=record[1].path) }}">
+                <h6>{{ record[1].doc_name }}</h6>
+                <iframe width="800" height="600"
+                        src="{{ url_for('download_file', path_to_file=record[1].path) }}#view=Fit"></iframe>
+            </a>
+            <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
+        </div>
+        </div>
+        {% endfor %}
     {% endfor %}
-    {% for record in watch_history_records_yesterday %}
-        {% if loop.first %}
-            <div class="row">
-                <div class="col offset-1">
-                    <h4 class="pt-5">Вчера</h4>
-                </div>
-            </div>
-        {% endif %}
-        {% if loop.last %}
-            <div class="row py-5">
-        {% else %}
-            <div class="row pt-5">
-        {% endif %}
-    <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
-            <h6>{{ record[1].doc_name }}</h6>
-            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
-        </a>
-        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
-    </div>
-    </div>
-    {% endfor %}
-    {% for record in watch_history_records_days_ago %}
-        {% if loop.first %}
-            <div class="row">
-                <div class="col offset-1">
-                    <h4 class="pt-5">Несколько дней назад</h4>
-                </div>
-            </div>
-        {% endif %}
-        {% if loop.last %}
-            <div class="row py-5">
-        {% else %}
-            <div class="row pt-5">
-        {% endif %}
-    <div class="col-10 offset-1">
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=record[1].doc_name + '.' + record[1].extension) }}">
-            <h6>{{ record[1].doc_name }}</h6>
-            <iframe width="800" height="600" src="{{ url_for('download_file', filename=record[1].doc_name + '.' + record[1].extension) }}#view=Fit"></iframe>
-        </a>
-        <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
-    </div>
-    </div>
-    {% endfor %}
-    {% if not watch_history_records_today
-     and not watch_history_records_yesterday
-      and not watch_history_records_days_ago %}
+    {% if not watch_history_records_dict %}
         <div class='row align-items-center mt-5'>
             <div class='col-12'>
                 <h4 class='text-center'>По запросу ничего не найдено!</h4>
@@ -102,39 +56,13 @@
     {% endif %}
     </div>
 
-    <div class="float-right bg-light position-fixed" id="history-search-container">
-        <form action="{{ url_for('search_in_watch_history_by_query') }}">
-            <div class="input-group mx-auto mt-4" id="history_input_group">
-                {{ search_in_history_form.history_search_query }}
-                <div class="input-group-append mt-4" id="history_input_group_append">
-                    <span class="btn btn-filter bg-white" id="watch-history-query-btn">
-                        <i class="fas fa-times form-control-clear"></i>
-                    </span>
-                    {{ search_in_history_form.history_search_button }}
-                </div>
-            </div>
-        </form>
-        <div class="form-check mx-auto w-75 mt-4">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_watch_history" name="rb_switch_history"
-                       checked>История
-                просмотра
-            </label>
-        </div>
-        <div class="form-check mx-auto w-75">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_search_history" name="rb_switch_history"
-                >История
-                поиска
-            </label>
-        </div>
-        <button type="button" class="btn btn-light font-weight-bold mt-4 ml-5" id="clear_history">Очистить историю
-            просмотра
-        </button>
-        <button type="button" class="btn btn-light font-weight-bold ml-5" id="track_history">Не отслеживать историю
-            просмотра
-        </button>
-    </div>
+    {% include 'public/watch_history_search_panel.html' %}
     {% include 'public/modal_windows.html' %}
+    {% assets 'cdn_common_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets 'watch_history_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 </body>
 </html>

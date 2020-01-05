@@ -7,10 +7,10 @@ from sqlalchemy import func
 from sqlalchemy import select
 
 from app import DB
-from app.constants import ProjectConstants
+from app.constants import PROJECT_CONSTANTS
 from app.models import WatchHistoryRecord
 from app.orm_db_actions import add_watch_history_record
-from .common_settings_for_test_case import CommonSettingsForTestCase
+from app.test.common_settings_for_test_case import CommonSettingsForTestCase
 
 
 class AddWatchHistoryRecordTestCase(CommonSettingsForTestCase):
@@ -31,36 +31,43 @@ class AddWatchHistoryRecordTestCase(CommonSettingsForTestCase):
                          datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def test_check_count_of_watch_history_records_with_same_watch_time(self):
-        """Тест добавления записи в историю просмотра в случае превышения лимита записей при одинаковых датах"""
-        for i in range(1, ProjectConstants.RECORDS_COUNT_WATCH_HISTORY + 1):
+        """Тест добавления записи в историю просмотра
+        в случае превышения лимита записей при одинаковых датах"""
+        for i in range(1, PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY + 1):
             add_watch_history_record(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), i)
         watch_history_record_with_min_watch_time = DB.session.query(WatchHistoryRecord) \
-            .filter(WatchHistoryRecord.watch_time == select([func.min(WatchHistoryRecord.watch_time)])) \
+            .filter(WatchHistoryRecord.watch_time ==
+                    select([func.min(WatchHistoryRecord.watch_time)])) \
             .first()
         add_watch_history_record(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                 ProjectConstants.RECORDS_COUNT_WATCH_HISTORY + 1)
+                                 PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY + 1)
         watch_history_record_with_max_watch_time = DB.session.query(WatchHistoryRecord) \
-            .filter(WatchHistoryRecord.watch_time == select([func.max(WatchHistoryRecord.watch_time)])) \
+            .filter(WatchHistoryRecord.watch_time ==
+                    select([func.max(WatchHistoryRecord.watch_time)])) \
             .first()
         watch_history_records = DB.session.query(WatchHistoryRecord).all()
-        self.assertEqual(len(watch_history_records), ProjectConstants.RECORDS_COUNT_WATCH_HISTORY)
+        self.assertEqual(len(watch_history_records), PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY)
         self.assertIn(watch_history_record_with_max_watch_time, watch_history_records)
         self.assertNotIn(watch_history_record_with_min_watch_time, watch_history_records)
 
     def test_check_count_of_watch_history_records_with_different_watch_time(self):
-        """Тест добавления записи в историю просмотра в случае превышения лимита записей при разных датах"""
-        for i in range(1, ProjectConstants.RECORDS_COUNT_WATCH_HISTORY + 1):
-            add_watch_history_record((datetime.now() + timedelta(seconds=i)).strftime("%Y-%m-%d %H:%M:%S"), i)
+        """Тест добавления записи в историю просмотра
+        в случае превышения лимита записей при разных датах"""
+        for i in range(1, PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY + 1):
+            add_watch_history_record(
+                (datetime.now() + timedelta(seconds=i)).strftime("%Y-%m-%d %H:%M:%S"), i)
         watch_history_record_with_min_watch_time = DB.session.query(WatchHistoryRecord) \
-            .filter(WatchHistoryRecord.watch_time == select([func.min(WatchHistoryRecord.watch_time)])) \
+            .filter(WatchHistoryRecord.watch_time ==
+                    select([func.min(WatchHistoryRecord.watch_time)])) \
             .first()
         add_watch_history_record((datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S"),
-                                 ProjectConstants.RECORDS_COUNT_WATCH_HISTORY + 1)
+                                 PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY + 1)
         watch_history_record_with_max_watch_time = DB.session.query(WatchHistoryRecord) \
-            .filter(WatchHistoryRecord.watch_time == select([func.max(WatchHistoryRecord.watch_time)])) \
+            .filter(WatchHistoryRecord.watch_time ==
+                    select([func.max(WatchHistoryRecord.watch_time)])) \
             .first()
         watch_history_records = DB.session.query(WatchHistoryRecord).all()
-        self.assertEqual(len(watch_history_records), ProjectConstants.RECORDS_COUNT_WATCH_HISTORY)
+        self.assertEqual(len(watch_history_records), PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY)
         self.assertIn(watch_history_record_with_max_watch_time, watch_history_records)
         self.assertNotIn(watch_history_record_with_min_watch_time, watch_history_records)
 

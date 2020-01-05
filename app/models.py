@@ -1,7 +1,8 @@
 """Файл, в котором реализованы различные сущности БД в виде классов"""
 
 from app import DB
-from app.utils import FileExtension
+from app import MA
+from app.constants import FileExtension
 
 
 class DocMetadata(DB.Model):
@@ -54,3 +55,32 @@ class SearchHistoryRecord(DB.Model):
 
     def __repr__(self):
         return "SearchHistoryRecord(%r, %r, %r)" % (self.id, self.search_query, self.search_time)
+
+
+class DocMetadataSchema(MA.ModelSchema):
+    """Схема для метаданных документов"""
+
+    class Meta:
+        """Метаданные для схемы таблицы метаданных документов"""
+        model = DocMetadata
+
+
+class WatchHistoryRecordSchema(MA.ModelSchema):
+    """Схема для метаданных истории просмотра"""
+
+    class Meta:
+        """Метаданные для схемы таблицы истории просмотра"""
+        model = WatchHistoryRecord
+
+
+class SearchHistoryRecordSchema(MA.ModelSchema):
+    """Схема для метаданных истории поиска"""
+
+    class Meta:
+        """Метаданные для схемы таблицы истории поиска"""
+        model = SearchHistoryRecord
+
+
+DOC_METADATA_SCHEMA = DocMetadataSchema(many=True)
+WATCH_HISTORY_RECORD_SCHEMA = WatchHistoryRecordSchema(many=True)
+SEARCH_HISTORY_RECORD_SCHEMA = SearchHistoryRecordSchema(many=True)

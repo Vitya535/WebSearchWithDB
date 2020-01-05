@@ -6,18 +6,14 @@
     {% assets 'cdn_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    {% assets 'cdn_common_js' %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
     {% assets 'main_page_and_results_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/custom/common.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
 {% include 'public/navigation.html' %}
-<div class="container-fluid">
+<div class="container-fluid" id="docs-container">
     <div class="row">
         <div class="col offset-1">
             <h2 class="pt-2">Результаты поиска</h2>
@@ -35,11 +31,14 @@
             {% else %}
                 <div class="col">
             {% endif %}
-        <a class="nav-link text-dark float-left pr-3 py-0 pl-0" href="{{ url_for('watch_file', filename=document.doc_name + '.' + document.extension) }}">
+        <a class="nav-link text-dark float-left pr-3 py-0 pl-0"
+           href="{{ url_for('watch_file', path_to_file=document.path) }}">
             <h6>{{ document.doc_name }}</h6>
-            <iframe width="600" height="450" src="{{ url_for('download_file', filename=document.doc_name + '.' + document.extension) }}#view=Fit"></iframe>
+            <iframe width="600" height="450"
+                    src="{{ url_for('download_file', path_to_file=document.path) }}#view=Fit"></iframe>
         </a>
-        <a class="nav-link text-dark download_icon_style" href="{{ url_for('download_file', filename=document.doc_name + '.' + document.extension) }}" download>
+        <a class="nav-link text-dark download_icon_style"
+           href="{{ url_for('download_file', path_to_file=document.path) }}" download>
             <i class="fas fa-download"></i>
         </a>
         </div>
@@ -53,6 +52,13 @@
         </div>
     {% endfor %}
     </div>
+    {% include 'public/spinner_for_lazy_load.html' %}
     {% include 'public/modal_windows.html' %}
+    {% assets 'cdn_common_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets 'results_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 </body>
 </html>

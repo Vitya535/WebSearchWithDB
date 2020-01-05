@@ -2,10 +2,6 @@
     width: 680px;
 }
 
-.circling_style {
-    border-radius: 50%;
-}
-
 #label_modal_window_for_user {
     font-size: 18px;
     font-weight: 500;
@@ -16,8 +12,6 @@
     width: 40px;
     height: 40px;
     margin-right: 16px;
-    margin-top: 16px;
-    border-radius: 50%;
 }
 
 .email {
@@ -40,22 +34,18 @@
     border-right: 1px solid #ced4da;
 }
 
-.modal-backdrop.show {
-    opacity: 0;
-}
-
 #account_dialog {
     top: 55px;
     right: 30px;
     position: absolute;
 }
 
-html, body {
-    height: 100%;
-}
-
 .form-control-clear {
     z-index: 10;
     pointer-events: auto;
     cursor: pointer;
+}
+
+.modal-backdrop.show {
+    opacity: 0;
 }

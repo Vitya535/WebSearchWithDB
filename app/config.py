@@ -1,18 +1,21 @@
 """Различные конфигурации для проекта"""
-from os import path
+from os import environ
+from os import getcwd
 from os import urandom
+from os.path import dirname
+from os.path import join
 
-BASEDIR = path.abspath(path.dirname(__file__))
+BASEDIR = dirname(__file__)
 DOCUMENTS_DB = 'documents.db'
-TEST_DB_DIR = 'unit_tests/test.db'
+TEST_DB_DIR = 'test/test.db'
+environ['LD_LIBRARY_PATH'] = getcwd()
 
 
 class Config:
     """Основной общий класс конфигурации"""
     SECRET_KEY = urandom(16)
-    CLIENT_IMAGES = 'test_files/'
     CSRF_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, DOCUMENTS_DB)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, DOCUMENTS_DB)
     CDN_HTTPS = True
     CDN_TIMESTAMP = False
     CDN_DOMAIN = 'cdnjs.cloudflare.com'
@@ -20,8 +23,10 @@ class Config:
                      'ajax/libs/popper.js/1.14.7/umd/popper.min.js',
                      'ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js',
                      'ajax/libs/font-awesome/5.11.2/js/all.min.js',
+                     'ajax/libs/viewerjs/1.5.0/viewer.min.js',
                      'ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css',
-                     'ajax/libs/font-awesome/5.11.2/css/all.min.css']
+                     'ajax/libs/font-awesome/5.11.2/css/all.min.css',
+                     'ajax/libs/viewerjs/1.5.0/viewer.min.css']
 
 
 class ProductionConfig(Config):
@@ -52,4 +57,4 @@ class TestingConfig(Config):
     CDN_DEBUG = False
     MINIFY_HTML = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + path.join(BASEDIR, TEST_DB_DIR)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, TEST_DB_DIR)

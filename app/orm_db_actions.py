@@ -2,11 +2,13 @@
 
 from datetime import datetime
 
+from sqlalchemy import and_
+from sqlalchemy import between
 from sqlalchemy import func
 
 from app import DB
 from app import LOG
-from app.constants import ProjectConstants
+from app.constants import PROJECT_CONSTANTS
 from app.models import DocMetadata
 from app.models import SearchHistoryRecord
 from app.models import WatchHistoryRecord
@@ -14,7 +16,8 @@ from app.models import WatchHistoryRecord
 
 def check_count_of_watch_history_records(function_to_decorate):
     """Проверка количества записей в истории просмотра"""
-    LOG.debug(f"Enter the check_count_of_watch_history_records with decorated function={function_to_decorate.__name__}")
+    LOG.debug(f"Enter the check_count_of_watch_history_records "
+              f"with decorated function={function_to_decorate.__name__}")
 
     def wrapper(search_time: str, doc_id: int):
         LOG.debug(f"Enter the wrapper with search_time={search_time} and doc_id={doc_id}")
@@ -22,8 +25,9 @@ def check_count_of_watch_history_records(function_to_decorate):
         all_watch_history_records_count = DB.session.query(WatchHistoryRecord) \
             .count()
         LOG.debug(f"All founded watch_history_records is {all_watch_history_records_count}")
-        if all_watch_history_records_count > ProjectConstants.RECORDS_COUNT_WATCH_HISTORY:
-            LOG.debug(f"Founded watch_history_records more than limit={ProjectConstants.RECORDS_COUNT_WATCH_HISTORY}")
+        if all_watch_history_records_count > PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY:
+            LOG.debug(f"Founded watch_history_records "
+                      f"more than limit={PROJECT_CONSTANTS.RECORDS_COUNT_WATCH_HISTORY}")
             delete_old_watch_history_record()
 
     return wrapper
@@ -35,13 +39,15 @@ def check_count_of_search_history_records(function_to_decorate):
               f" function={function_to_decorate.__name__}")
 
     def wrapper(search_query: str, search_time: str):
-        LOG.debug(f"Enter the wrapper with search_query={search_query} and search_time={search_time}")
+        LOG.debug(f"Enter the wrapper with search_query={search_query} "
+                  f"and search_time={search_time}")
         function_to_decorate(search_query, search_time)
         all_search_history_records_count = DB.session.query(SearchHistoryRecord) \
             .count()
         LOG.debug(f"All founded search_history_records is {all_search_history_records_count}")
-        if all_search_history_records_count > ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY:
-            LOG.debug(f"Founded search_history_records more than limit={ProjectConstants.RECORDS_COUNT_SEARCH_HISTORY}")
+        if all_search_history_records_count > PROJECT_CONSTANTS.RECORDS_COUNT_SEARCH_HISTORY:
+            LOG.debug(f"Founded search_history_records "
+                      f"more than limit={PROJECT_CONSTANTS.RECORDS_COUNT_SEARCH_HISTORY}")
             delete_old_search_history_record()
 
     return wrapper
@@ -53,7 +59,8 @@ def check_on_uniqueness_new_search_history_record(function_to_decorate):
               f" function={function_to_decorate.__name__}")
 
     def wrapper(search_query: str, search_time: str):
-        LOG.debug(f"Enter the wrapper with search_query={search_query} and search_time={search_time}")
+        LOG.debug(f"Enter the wrapper with search_query={search_query} "
+                  f"and search_time={search_time}")
         search_history_record = DB.session.query(SearchHistoryRecord) \
             .filter_by(search_query=search_query) \
             .first()
@@ -72,9 +79,10 @@ def check_on_uniqueness_new_search_history_record(function_to_decorate):
 
 
 def check_on_uniqueness_new_watch_history_record(function_to_decorate):
-    """Проверка новой записи истории просмотров на уникальность, если не уникальна, то обновляем дату"""
-    LOG.debug(f"Enter the check_on_uniqueness_new_watch_history_record with decorated"
-              f" function={function_to_decorate.__name__}")
+    """Проверка новой записи истории просмотров на уникальность,
+     если не уникальна, то обновляем дату"""
+    LOG.debug(f"Enter the check_on_uniqueness_new_watch_history_record "
+              f"with decorated function={function_to_decorate.__name__}")
 
     def wrapper(search_time: str, doc_id: int):
         LOG.debug(f"Enter the wrapper with search_time={search_time} and doc_id={doc_id}")
@@ -115,7 +123,8 @@ def clear_all_in_watch_history():
 @check_on_uniqueness_new_watch_history_record
 def add_watch_history_record(search_time: str, doc_id: int):
     """Добавление записи в историю просмотра"""
-    LOG.debug(f"Enter the add_watch_history_record with search_time={search_time} and doc_id={doc_id}")
+    LOG.debug(f"Enter the add_watch_history_record "
+              f"with search_time={search_time} and doc_id={doc_id}")
     new_watch_history_record = WatchHistoryRecord(search_time, doc_id)
     LOG.debug(f"A new_watch_history_record for adding is {new_watch_history_record}")
     DB.session.add(new_watch_history_record)
@@ -126,7 +135,8 @@ def add_watch_history_record(search_time: str, doc_id: int):
 @check_on_uniqueness_new_search_history_record
 def add_search_history_record(search_query: str, search_time: str):
     """Добавление записи в историю поиска"""
-    LOG.debug(f"Enter the add_search_history_record with search_query={search_query} and search_time={search_time}")
+    LOG.debug(f"Enter the add_search_history_record "
+              f"with search_query={search_query} and search_time={search_time}")
     new_search_history_record = SearchHistoryRecord(search_query, search_time)
     LOG.debug(f"A new_search_history_record for adding is {new_search_history_record}")
     DB.session.add(new_search_history_record)
@@ -174,7 +184,8 @@ def delete_watch_history_record_by_doc_name(doc_name: str):
 
 def delete_search_history_record_by_search_query(search_query: str):
     """Удаление записи из истории поиска"""
-    LOG.debug(f"Enter the delete_search_history_record_by_search_query with search_query={search_query}")
+    LOG.debug(f"Enter the delete_search_history_record_by_search_query "
+              f"with search_query={search_query}")
     DB.session.query(SearchHistoryRecord) \
         .filter_by(search_query=search_query) \
         .delete()
@@ -182,30 +193,52 @@ def delete_search_history_record_by_search_query(search_query: str):
     DB.session.commit()
 
 
-def search_all_documents() -> list:
-    """Поиск всех документов в БД"""
-    LOG.debug(f"Enter the search_all_documents")
-    all_documents = DB.session.query(DocMetadata) \
+def search_six_documents_from_number(last_doc_number: int) -> list:
+    LOG.debug(f"Enter the search_six_documents_from_number with last_doc_number={last_doc_number}")
+    six_documents = DB.session.query(DocMetadata) \
+        .filter(between(DocMetadata.id, last_doc_number, last_doc_number + PROJECT_CONSTANTS.DOCS_COUNT_FOR_UPLOAD - 1)) \
         .all()
-    LOG.debug(f"All documents is {all_documents}")
-    return all_documents
+    LOG.debug(f"Six documents is {six_documents} start from last_doc_number={last_doc_number}")
+    return six_documents
 
 
-def search_document_by_full_name(doc_name: str) -> DocMetadata:
+def search_first_four_documents() -> list:
+    LOG.debug(f"Enter the search_first_two_documents")
+    first_four_documents = DB.session.query(DocMetadata) \
+        .limit(4) \
+        .all()
+    LOG.debug(f"First two documents is {first_four_documents}")
+    return first_four_documents
+
+
+def search_document_by_path(path: str) -> DocMetadata:
     """Поиск документов в БД по его полному названию"""
-    LOG.debug(f"Enter the search_document_by_full_name with doc_name={doc_name}")
+    LOG.debug(f"Enter the search_document_by_path with path={path}")
     document = DB.session.query(DocMetadata) \
-        .filter_by(doc_name=doc_name) \
+        .filter_by(path=path) \
         .first()
-    LOG.debug(f"Document with doc_name={doc_name} is {document}")
+    LOG.debug(f"Document with path={path} is {document}")
     return document
 
 
-def search_documents_by_partial_name(doc_name: str) -> list:
+def search_first_four_documents_by_partial_name(doc_name: str) -> list:
     """Поиск документов в БД по его частичному названию"""
-    LOG.debug(f"Enter the search_documents_by_partial_name with doc_name={doc_name}")
+    LOG.debug(f"Enter the search_first_four_documents_by_partial_name with doc_name={doc_name}")
     documents = DB.session.query(DocMetadata) \
         .filter(DocMetadata.doc_name.contains(doc_name)) \
+        .limit(4) \
+        .all()
+    LOG.debug(f"Documents with doc_name={doc_name} is {documents}")
+    return documents
+
+
+def search_six_documents_by_partial_name_from_number(doc_name: str, last_doc_number: int) -> list:
+    """Поиск документов в БД по его частичному названию"""
+    LOG.debug(f"Enter the search_first_four_documents_by_partial_name with doc_name={doc_name}")
+    documents = DB.session.query(DocMetadata) \
+        .filter(and_(DocMetadata.doc_name.contains(doc_name),
+                     between(DocMetadata.id, last_doc_number,
+                             last_doc_number + PROJECT_CONSTANTS.DOCS_COUNT_FOR_UPLOAD - 1))) \
         .all()
     LOG.debug(f"Documents with doc_name={doc_name} is {documents}")
     return documents
@@ -236,11 +269,11 @@ def get_watch_history_records_by_name(doc_name: str) -> list:
     """Получение записей из истории просмотра по названию документа"""
     LOG.debug(f"Enter the get_watch_history_records_by_name with doc_name={doc_name}")
     watch_history_records = DB.session.query(WatchHistoryRecord, DocMetadata) \
-        .filter(WatchHistoryRecord.doc_id == DocMetadata.id) \
-        .filter(DocMetadata.doc_name.contains(doc_name)) \
+        .filter(and_(WatchHistoryRecord.doc_id == DocMetadata.id, DocMetadata.doc_name.contains(doc_name))) \
         .order_by(WatchHistoryRecord.watch_time.desc()) \
         .all()
-    LOG.debug(f"All watch_history_records founded by doc_name={doc_name} is {watch_history_records}")
+    LOG.debug(f"All watch_history_records founded by "
+              f"doc_name={doc_name} is {watch_history_records}")
     return watch_history_records
 
 
@@ -251,7 +284,8 @@ def get_search_history_records_by_name(search_query: str) -> list:
         .filter(SearchHistoryRecord.search_query.contains(search_query)) \
         .order_by(SearchHistoryRecord.search_time.desc()) \
         .all()
-    LOG.debug(f"All search_history_records founded by search_query={search_query} is {search_history_records}")
+    LOG.debug(f"All search_history_records founded by "
+              f"search_query={search_query} is {search_history_records}")
     return search_history_records
 
 

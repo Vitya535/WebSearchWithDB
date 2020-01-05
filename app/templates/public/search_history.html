@@ -6,14 +6,8 @@
     {% assets 'cdn_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
-    {% assets 'cdn_common_js' %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
     {% assets 'history_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
-    {% assets 'search_history_js' %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
     <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
@@ -49,37 +43,13 @@
     {% endfor %}
     </div>
 
-    <div class="float-right bg-light position-fixed" id="history-search-container">
-        <form action="{{ url_for('search_in_search_history_by_query') }}">
-            <div class="input-group mx-auto mt-4" id="history_input_group">
-                {{ search_in_history_form.history_search_query }}
-                <div class="input-group-append mt-4" id="history_input_group_append">
-                    <span class="btn btn-filter bg-white" id="search-history-query-btn">
-                        <i class="fas fa-times form-control-clear"></i>
-                    </span>
-                    {{ search_in_history_form.history_search_button }}
-                </div>
-            </div>
-        </form>
-        <div class="form-check mx-auto w-75 mt-4">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_watch_history" name="rb_switch_history">История
-                просмотра
-            </label>
-        </div>
-        <div class="form-check mx-auto w-75">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" id="rb_search_history" name="rb_switch_history" checked>История
-                поиска
-            </label>
-        </div>
-        <button type="button" class="btn btn-light font-weight-bold mt-4 ml-5" id="clear_history">Очистить историю
-            поиска
-        </button>
-        <button type="button" class="btn btn-light font-weight-bold ml-5" id="track_history">Не отслеживать историю
-            поиска
-        </button>
-    </div>
+    {% include 'public/search_history_search_panel.html' %}
     {% include 'public/modal_windows.html' %}
+    {% assets 'cdn_common_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+    {% assets 'search_history_js' %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 </body>
 </html>

@@ -9,10 +9,9 @@ CURSOR.execute("""PRAGMA foreign_keys = ON""")
 
 CURSOR.execute("""CREATE TABLE if not exists doc_metadata
                 (id integer PRIMARY KEY AUTOINCREMENT,
-                 extension text CHECK (extension in ('doc', 'pdf', 'docx', 'txt') NOT NULL),
+                 extension text CHECK (extension in ('pdf', 'docx', 'odt') NOT NULL),
                  doc_name text NOT NULL,
-                 path text NOT NULL,
-                 img_url text NOT NULL
+                 path text NOT NULL
                  CONSTRAINT unique_doc_metadata UNIQUE (name, path))
                """)
 

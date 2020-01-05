@@ -1,9 +1,19 @@
 """Файл, содержащий в себе разлчиные константы для проекта"""
-from aenum import Constant
+
+from collections import namedtuple
+from enum import Enum
 
 
-class ProjectConstants(Constant):
-    """Класс для проектных констант"""
-    COUNT_OF_DOCS_IN_ROW = 2
-    RECORDS_COUNT_WATCH_HISTORY = 50
-    RECORDS_COUNT_SEARCH_HISTORY = 50
+class FileExtension(str, Enum):
+    """Класс со списком текстовых файловых расширений"""
+    pdf = 'pdf'
+    docx = 'docx'
+    odt = 'odt'
+
+
+ProjectConstants = namedtuple('ProjectConstants',
+                              'COUNT_OF_DOCS_IN_ROW '
+                              'RECORDS_COUNT_WATCH_HISTORY '
+                              'RECORDS_COUNT_SEARCH_HISTORY '
+                              'DOCS_COUNT_FOR_UPLOAD')
+PROJECT_CONSTANTS = ProjectConstants(2, 50, 50, 6)

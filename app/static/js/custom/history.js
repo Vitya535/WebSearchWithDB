@@ -6,4 +6,8 @@ $(document).ready(function () {
     $("#rb_search_history").click(function () {
         $(location).attr('href', '/search_history');
     });
+
+    $('#search-history-query-btn, #watch-history-query-btn').click(function () {
+        $('#history_search_query').val('');
+    });
 });

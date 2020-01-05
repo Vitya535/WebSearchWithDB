@@ -1,0 +1,9 @@
+{% if documents|length == 1 %}
+    <div class="d-flex justify-content-center mb-3" id="sentinel" style="display: none">
+        <div class="spinner-border" role="status" style="display: none"></div>
+    </div>
+{% else %}
+    <div class="d-flex justify-content-center mb-3" id="sentinel">
+        <div class="spinner-border" role="status"></div>
+    </div>
+{% endif %}
