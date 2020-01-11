@@ -8,7 +8,8 @@
     line-height: 2rem;
 }
 
-#avatar {
+#avatar,
+#modal_window_avatar {
     width: 40px;
     height: 40px;
     margin-right: 16px;

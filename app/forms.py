@@ -31,7 +31,7 @@ class SearchForm(Form):
     search_query = SearchField(render_kw={'placeholder': 'Введите запрос', 'class': 'form-control'},
                                validators=[InputRequired()])
     search_button = ButtonField('<i class="fas fa-search"></i>',
-                                render_kw={'class': 'btn btn-light border'})
+                                render_kw={'class': 'btn btn-light border', 'aria-label': 'Search for docs'})
 
 
 class HistorySearchForm(Form):
@@ -40,4 +40,4 @@ class HistorySearchForm(Form):
         render_kw={'placeholder': 'Что найти в истории?', 'class': 'form-control mt-4 mx-auto',
                    'id': 'history_search_query'}, validators=[InputRequired()])
     history_search_button = ButtonField('<i class="fas fa-search"></i>',
-                                        render_kw={'class': 'btn btn-light border'})
+                                        render_kw={'class': 'btn btn-light border', 'aria-label': 'Search in history'})

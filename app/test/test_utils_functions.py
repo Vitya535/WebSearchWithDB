@@ -55,33 +55,33 @@ class UtilsFunctionsTestCase(CommonSettingsForTestCase):
             .filter(WatchHistoryRecord.doc_id == DocMetadata.id) \
             .order_by(WatchHistoryRecord.watch_time.desc()) \
             .all()
-        watch_history_records_today, \
-        watch_history_records_yesterday, \
-        watch_history_records_days_ago = \
-            divide_watch_history_records_by_datetime(watch_history_records)
-        for record in watch_history_records_today:
-            self.assertLess(
-                (datetime.now() -
-                 datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
-                 ).total_seconds() / 3600,
-                24)
-        for record in watch_history_records_yesterday:
-            self.assertLessEqual(
-                (datetime.now() -
-                 datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
-                 ).total_seconds() / 3600,
-                48)
-            self.assertGreaterEqual(
-                (datetime.now() -
-                 datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
-                 ).total_seconds() / 3600,
-                24)
-        for record in watch_history_records_days_ago:
-            self.assertGreater(
-                (datetime.now() -
-                 datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
-                 ).total_seconds() / 3600,
-                48)
+
+        watch_history_records_dict = divide_watch_history_records_by_datetime(watch_history_records)
+        for watch_time, watch_history_records in watch_history_records_dict.items():
+            for record in watch_history_records:
+                if watch_time == 'Сегодня':
+                    self.assertLess(
+                        (datetime.now() -
+                         datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
+                         ).total_seconds() / 3600,
+                        24)
+                elif watch_time == 'Вчера':
+                    self.assertLessEqual(
+                        (datetime.now() -
+                         datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
+                         ).total_seconds() / 3600,
+                        48)
+                    self.assertGreaterEqual(
+                        (datetime.now() -
+                         datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
+                         ).total_seconds() / 3600,
+                        24)
+                else:
+                    self.assertGreater(
+                        (datetime.now() -
+                         datetime.strptime(record[0].watch_time, "%Y-%m-%d %H:%M:%S")
+                         ).total_seconds() / 3600,
+                        48)
 
 
 if __name__ == '__main__':

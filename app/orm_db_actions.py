@@ -196,6 +196,7 @@ def delete_search_history_record_by_search_query(search_query: str):
 def search_six_documents_from_number(last_doc_number: int) -> list:
     LOG.debug(f"Enter the search_six_documents_from_number with last_doc_number={last_doc_number}")
     six_documents = DB.session.query(DocMetadata) \
+        .order_by(DocMetadata.doc_name) \
         .filter(between(DocMetadata.id, last_doc_number, last_doc_number + PROJECT_CONSTANTS.DOCS_COUNT_FOR_UPLOAD - 1)) \
         .all()
     LOG.debug(f"Six documents is {six_documents} start from last_doc_number={last_doc_number}")
@@ -205,6 +206,7 @@ def search_six_documents_from_number(last_doc_number: int) -> list:
 def search_first_four_documents() -> list:
     LOG.debug(f"Enter the search_first_two_documents")
     first_four_documents = DB.session.query(DocMetadata) \
+        .order_by(DocMetadata.doc_name) \
         .limit(4) \
         .all()
     LOG.debug(f"First two documents is {first_four_documents}")

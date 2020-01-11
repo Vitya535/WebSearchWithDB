@@ -2,6 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="WebSearchWithDB Search Results">
+    <meta name="theme-color" content="#317EFB"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Результаты поиска</title>
     {% assets 'cdn_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
@@ -34,7 +38,7 @@
         <a class="nav-link text-dark float-left pr-3 py-0 pl-0"
            href="{{ url_for('watch_file', path_to_file=document.path) }}">
             <h6>{{ document.doc_name }}</h6>
-            <iframe width="600" height="450"
+            <iframe width="600" height="450" title="{{ document.doc_name }}"
                     src="{{ url_for('download_file', path_to_file=document.path) }}#view=Fit"></iframe>
         </a>
         <a class="nav-link text-dark download_icon_style"

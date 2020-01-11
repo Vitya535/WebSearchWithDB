@@ -57,9 +57,12 @@ def divide_watch_history_records_by_datetime(watch_history_records: list) -> dic
             record[0].watch_time, "%Y-%m-%d %H:%M:%S").date()).days > 2,
         watch_history_records))
 
-    watch_history_records_dict = {'Сегодня': watch_history_records_today,
-                                  'Вчера': watch_history_records_yesterday,
-                                  'Несколько дней назад': watch_history_records_days_ago}
+    if not watch_history_records_today and not watch_history_records_yesterday and not watch_history_records_days_ago:
+        watch_history_records_dict = {}
+    else:
+        watch_history_records_dict = {'Сегодня': watch_history_records_today,
+                                      'Вчера': watch_history_records_yesterday,
+                                      'Несколько дней назад': watch_history_records_days_ago}
 
     LOG.debug(f"Records for today is {watch_history_records_today},"
               f" for yesterday is {watch_history_records_yesterday},"

@@ -9,6 +9,7 @@ class FileExtension(str, Enum):
     pdf = 'pdf'
     docx = 'docx'
     odt = 'odt'
+    ods = 'ods'
 
 
 ProjectConstants = namedtuple('ProjectConstants',

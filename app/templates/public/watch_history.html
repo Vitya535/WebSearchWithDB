@@ -2,6 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="WebSearchWithDB Watch History">
+    <meta name="theme-color" content="#317EFB"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>История просмотра</title>
     {% assets 'cdn_common_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
@@ -39,21 +43,20 @@
             <a class="nav-link text-dark float-left pr-3 py-0 pl-0"
                href="{{ url_for('watch_file', path_to_file=record[1].path) }}">
                 <h6>{{ record[1].doc_name }}</h6>
-                <iframe width="800" height="600"
+                <iframe width="800" height="600" title="{{ record[1].doc_name }}"
                         src="{{ url_for('download_file', path_to_file=record[1].path) }}#view=Fit"></iframe>
             </a>
             <i class="fas fa-times align-self-center float-right fa-2x delete-doc"></i>
         </div>
         </div>
         {% endfor %}
-    {% endfor %}
-    {% if not watch_history_records_dict %}
+    {% else %}
         <div class='row align-items-center mt-5'>
             <div class='col-12'>
                 <h4 class='text-center'>История просмотров пуста!</h4>
             </div>
         </div>
-    {% endif %}
+    {% endfor %}
     </div>
 
     {% include 'public/watch_history_search_panel.html' %}

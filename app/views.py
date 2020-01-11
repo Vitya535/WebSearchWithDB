@@ -33,6 +33,12 @@ from app.utils import divide_watch_history_records_by_datetime
 from app.utils import update_datetime_in_search_history_records
 
 
+@APP.after_request
+def add_header(response):
+    response.cache_control.max_age = 86400
+    return response
+
+
 @APP.route('/')
 def main_page():
     """Главная веб-страничка"""
@@ -40,7 +46,6 @@ def main_page():
               f"with url={request.url}, args={request.args}, method={request.method}")
     search_form = SearchForm(request.args)
     if not request.args:
-        # search_form = SearchForm(request.args)
         first_four_documents = search_first_four_documents()
         documents_map = convert_document_list_to_map(first_four_documents)
         LOG.debug(f"First_four_documents is {first_four_documents}")
@@ -182,7 +187,7 @@ def clear_watch_history():
 @APP.route('/download_file/<path:path_to_file>')
 def download_file(path_to_file):
     """Урл для первоначальной загрузки документов в iframe на страницах"""
-    LOG.debug(f"Enter into load_file_into_iframe "
+    LOG.debug(f"Enter into download_file "
               f"with url={request.url}, args={request.args}, method={request.method},"
               f" path_to_file={path_to_file}")
     try:
