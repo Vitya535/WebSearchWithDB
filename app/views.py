@@ -7,6 +7,7 @@ from flask import jsonify
 from flask import render_template
 from flask import request
 from flask import send_file
+from htmlmin import minify
 
 from app import APP
 from app import LOG
@@ -49,9 +50,9 @@ def main_page():
         first_four_documents = search_first_four_documents()
         documents_map = convert_document_list_to_map(first_four_documents)
         LOG.debug(f"First_four_documents is {first_four_documents}")
-        return render_template('public/main_page.html',
-                               search_form=search_form,
-                               documents=documents_map)
+        return minify(render_template('public/main_page.html',
+                                      search_form=search_form,
+                                      documents=documents_map))
     last_doc_number = int(request.args.get('last_doc_number'))
     LOG.debug(f"last_doc_number={last_doc_number}")
     six_documents = search_six_documents_from_number(last_doc_number + 1)
@@ -77,9 +78,9 @@ def search_by_query():
         LOG.debug(f"First_four_docs founded by search_query={search_query}, "
                   f"first_four_documents={first_four_documents}")
         add_search_history_record(search_query, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        return render_template('public/results.html',
-                               search_form=search_form,
-                               documents=documents_map)
+        return minify(render_template('public/results.html',
+                                      search_form=search_form,
+                                      documents=documents_map))
     last_doc_number = int(request.args.get('last_doc_number'))
     LOG.debug(f"last_doc_number={last_doc_number}")
     six_documents = search_six_documents_by_partial_name_from_number(search_query, last_doc_number + 1)
@@ -103,10 +104,10 @@ def search_in_search_history_by_query():
     updated_search_history_records = \
         update_datetime_in_search_history_records(search_history_records)
     LOG.debug(f"All search history records founded by name={doc_name}: {search_history_records}")
-    return render_template('public/search_history_results.html',
-                           search_form=search_form,
-                           search_in_history_form=search_in_history_form,
-                           search_history_records=updated_search_history_records)
+    return minify(render_template('public/search_history_results.html',
+                                  search_form=search_form,
+                                  search_in_history_form=search_in_history_form,
+                                  search_history_records=updated_search_history_records))
 
 
 @APP.route('/watch_history_results')
@@ -120,10 +121,10 @@ def search_in_watch_history_by_query():
     doc_name = request.args.get('history_search_query')
     watch_history_records = get_watch_history_records_by_name(doc_name)
     watch_history_records_dict = divide_watch_history_records_by_datetime(watch_history_records)
-    return render_template('public/watch_history_results.html',
-                           search_form=search_form,
-                           search_in_history_form=search_in_history_form,
-                           watch_history_records_dict=watch_history_records_dict)
+    return minify(render_template('public/watch_history_results.html',
+                                  search_form=search_form,
+                                  search_in_history_form=search_in_history_form,
+                                  watch_history_records_dict=watch_history_records_dict))
 
 
 @APP.route('/watch_history', methods=['GET', 'POST'])
@@ -136,10 +137,10 @@ def show_watch_history():
         search_in_history_form = HistorySearchForm(request.args)
         all_watch_history_records = get_all_watch_history_records()
         watch_history_records_dict = divide_watch_history_records_by_datetime(all_watch_history_records)
-        return render_template('public/watch_history.html',
-                               search_form=search_form,
-                               search_in_history_form=search_in_history_form,
-                               watch_history_records_dict=watch_history_records_dict)
+        return minify(render_template('public/watch_history.html',
+                                      search_form=search_form,
+                                      search_in_history_form=search_in_history_form,
+                                      watch_history_records_dict=watch_history_records_dict))
     doc_name = request.values.get('doc_name')
     delete_watch_history_record_by_doc_name(doc_name)
     return jsonify()
@@ -157,10 +158,10 @@ def show_search_history():
         updated_search_history_records = \
             update_datetime_in_search_history_records(all_search_history_records)
         LOG.debug(f"Updated search history records: {updated_search_history_records}")
-        return render_template('public/search_history.html',
-                               search_form=search_form,
-                               search_in_history_form=search_in_history_form,
-                               search_history_records=updated_search_history_records)
+        return minify(render_template('public/search_history.html',
+                                      search_form=search_form,
+                                      search_in_history_form=search_in_history_form,
+                                      search_history_records=updated_search_history_records))
     search_query = request.values.get('search_query')
     delete_search_history_record_by_search_query(search_query)
     return jsonify()

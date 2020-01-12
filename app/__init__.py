@@ -8,8 +8,7 @@ from os.path import dirname
 from flask import Flask
 from flask.logging import create_logger
 from flask_cdn import CDN
-# from flask_compress import Compress
-from flask_htmlmin import HTMLMIN
+from flask_compress import Compress
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
@@ -26,10 +25,8 @@ from app.assets import ASSETS
 # ToDo - может какие-нибудь сортировки этих файлов, различные вьюхи???
 # ToDo - оптимизация, рефакторинг по возможности
 
-# ToDo - на завтра наверное:
-#  1. https://github.com/colour-science/flask-compress - интересная штука для компресса respons-ов с фласка
-#  (Эта штука дает эксепшн в купе с htmlmin, разобраться с ним надо)
-#  2. Нашел я тут гугловские тулы - думаю надо поработать со страничками например, с помощью Lighthouse и др.
+# ToDo:
+#  Нашел я тут гугловские тулы - думаю надо поработать со страничками например, с помощью Lighthouse и др.
 #  (С помощью Lighthouse и других тулов можно пооптимизировать в конце работу приложения,
 #  особенно performance веб-страничек при различных скоростях интернета с помощью Lighthouse)
 
@@ -46,9 +43,8 @@ DB = SQLAlchemy(APP)
 MA = Marshmallow(APP)
 CDN = CDN(APP)
 LOG = create_logger(APP)
-HTMLMIN = HTMLMIN(APP)
 CSRF = CSRFProtect(APP)
-# COMPRESS = Compress(APP)
+COMPRESS = Compress(APP)
 
 FORMATTER = Formatter("%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s",
                       "%Y-%m-%d %H:%M:%S")

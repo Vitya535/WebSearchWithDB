@@ -38,7 +38,6 @@ class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ASSETS_DEBUG = False
     CDN_DEBUG = False
-    MINIFY_HTML = True
 
 
 class DevelopmentConfig(Config):
@@ -48,7 +47,6 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     ASSETS_DEBUG = True
     CDN_DEBUG = True
-    MINIFY_HTML = False
 
 
 class TestingConfig(Config):
@@ -57,6 +55,5 @@ class TestingConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ASSETS_DEBUG = False
     CDN_DEBUG = False
-    MINIFY_HTML = False
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, TEST_DB_DIR)

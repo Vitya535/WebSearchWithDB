@@ -13,6 +13,7 @@
     {% assets 'main_page_and_results_css' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}" media="screen">
     {% endassets %}
+    <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
 {% include 'public/navigation.html' %}
