@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>404 Not Found</title>
+    {% assets 'errors_css' %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" media="screen">
+    {% endassets %}
+    <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
-    <h3>Кажется, вы ошиблись в написании адреса. Пожалуйста, проверьте его правильность.</h3>
-    <h3>Или перейдите по ссылке <a href="{{ url_for('main_page') }}">на главную страницу.</a></h3>
+<div class="container text-center h-50 position-absolute my-auto" id="error-content-container">
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+    <h2>Страница, на которую вы пытаетесь зайти не существует.</h2>
+    <button type="button" class="btn btn-danger" id="button-go-to-main-page">Вернуться на главную страницу</button>
+</div>
+{% assets 'errors_js' %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 </body>
 </html>

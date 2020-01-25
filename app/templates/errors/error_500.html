@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>500 Internal Error</title>
+    {% assets 'errors_css' %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}" media="screen">
+    {% endassets %}
+    <link rel="icon" href="{{ url_for('static', filename='img/search.png') }}">
 </head>
 <body>
-<h3>Произошла ошибка на сервере. Приносим свои извинения.</h3>
+<div class="container text-center h-50 position-absolute my-auto" id="error-content-container">
+    <h1>500</h1>
+    <h2>Internal Server Error</h2>
+    <h2>Упс, кажется произошла ошибка на сервере.</h2>
+    <button type="button" class="btn btn-danger" id="button-go-to-main-page">Вернуться на главную страницу</button>
+</div>
+{% assets 'errors_js' %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 </body>
 </html>
