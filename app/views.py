@@ -36,6 +36,7 @@ from app.utils import update_datetime_in_search_history_records
 
 @APP.after_request
 def add_header(response):
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     response.cache_control.max_age = 86400
     return response
 
@@ -60,7 +61,7 @@ def main_page():
     six_documents_map = convert_document_list_to_map(six_documents)
     jsonified_six_documents_map = convert_document_map_to_json(six_documents_map)
     LOG.debug(f"Jsonified map - {jsonified_six_documents_map}")
-    return jsonified_six_documents_map
+    return jsonify(jsonified_six_documents_map)
 
 
 @APP.route('/results')
@@ -88,7 +89,7 @@ def search_by_query():
     six_documents_map = convert_document_list_to_map(six_documents)
     jsonified_six_documents_map = convert_document_map_to_json(six_documents_map)
     LOG.debug(f"Jsonified map - {jsonified_six_documents_map}")
-    return jsonified_six_documents_map
+    return jsonify(jsonified_six_documents_map)
 
 
 @APP.route('/search_history_results')
@@ -186,7 +187,7 @@ def clear_watch_history():
 
 
 @APP.route('/download_file/<path:path_to_file>')
-def download_file(path_to_file):
+def download_file(path_to_file: str):
     """Урл для первоначальной загрузки документов в iframe на страницах"""
     LOG.debug(f"Enter into download_file "
               f"with url={request.url}, args={request.args}, method={request.method},"
@@ -199,17 +200,16 @@ def download_file(path_to_file):
 
 
 @APP.route('/watch_file/<path:path_to_file>')
-def watch_file(path_to_file):
+def watch_file(path_to_file: str):
     """Веб-страничка для просмотра содержимого файла"""
     LOG.debug(f"Enter into watch_file "
               f"with url={request.url}, args={request.args}, method={request.method},"
               f" path_to_file={path_to_file}")
     try:
-        file = send_file(path_to_file)
         document_id = search_document_by_path(path_to_file).id
         LOG.debug(f"The path to file is {path_to_file} and it's id is {document_id}")
         add_watch_history_record(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), document_id)
-        return file
+        return send_file(path_to_file)
     except FileNotFoundError:
         LOG.error(f"File with path_to_file={path_to_file} not founded (404 Not Found)")
         abort(404)

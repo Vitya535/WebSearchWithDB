@@ -38,6 +38,7 @@ class ProductionConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ASSETS_DEBUG = False
     CDN_DEBUG = False
+    JSONIFY_PRETTYPRINT_REGULAR = False
 
 
 class DevelopmentConfig(Config):

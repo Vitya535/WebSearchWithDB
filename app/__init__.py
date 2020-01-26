@@ -11,6 +11,7 @@ from flask_cdn import CDN
 from flask_compress import Compress
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
 
 from app.assets import ASSETS
@@ -44,6 +45,19 @@ CDN = CDN(APP)
 LOG = create_logger(APP)
 CSRF = CSRFProtect(APP)
 COMPRESS = Compress(APP)
+
+CSP = {
+    'default-src': '\'self\'',
+    'script-src': ['\'self\'', 'https://cdnjs.cloudflare.com'],
+    'object-src': '\'self\'',
+    'style-src': ['\'self\'', '\'unsafe-inline\'', 'https://cdnjs.cloudflare.com'],
+    'img-src': '\'self\'',
+    'media-src': '\'none\'',
+    'frame-src': '\'self\'',
+    'font-src': ['\'self\'', 'https://cdnjs.cloudflare.com'],
+    'connect-src': '\'self\''
+}
+TALISMAN = Talisman(APP, content_security_policy=CSP, force_https=False)
 
 FORMATTER = Formatter("%(asctime)s - %(threadName)s - %(name)s - %(levelname)s - %(message)s",
                       "%Y-%m-%d %H:%M:%S")
